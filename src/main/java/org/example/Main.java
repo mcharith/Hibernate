@@ -1,8 +1,8 @@
 package org.example;
 
 import org.example.config.FactoryConfiguration;
-import org.example.embed.FullName;
-import org.example.entity.Student;
+import org.example.embed.FullAddress;
+import org.example.entity.Teacher;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -10,24 +10,25 @@ public class Main {
     public static void main(String[] args) {
         Session session=FactoryConfiguration.getInstance().getSession();
 
-        FullName fullName = new FullName("Charith","Siriwardana");
+        FullAddress fullAddress = new FullAddress("Matale","Naula");
+        Teacher teacher = new Teacher();
+        teacher.setId(1);
+        teacher.setName("Athula");
+        teacher.setFullAddress(fullAddress);
 
-        Student student = new Student();
-        student.setId(1);
-        student.setName(fullName);
-        student.setAddress("Matale");
+        Transaction transaction = session.beginTransaction();
+//        save
+        session.save(teacher);
 
-        //Save karanna kalin transaction ekak danna oni.
-        Transaction transaction=session.beginTransaction();
+//        delete
+//        session.delete(teacher);
 
-        session.save(student);
 
-        //eta passe commit karanna oni
+        Teacher teacher1 = session.get(Teacher.class,1);
+        System.out.println(teacher1.toString());
+
         transaction.commit();
-        session.close();//session ekak hadpuwama eka close karanna oni.
+        session.close();
 
-        //try delete and get.
-        //thawa table ekak kohomada methanata genne
-        //note eka piliwelata hadanna oni
     }
 }
